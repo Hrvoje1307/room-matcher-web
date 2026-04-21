@@ -1,4 +1,5 @@
 import { defineConfig } from "@pandacss/dev";
+import { buttonRecipe } from "./src/theme/recipes/button.recipe";
 
 export default defineConfig({
   preflight: true,
@@ -8,6 +9,9 @@ export default defineConfig({
 
   theme: {
     extend: {
+      recipes: {
+        button: buttonRecipe,
+      },
       tokens: {
         colors: {
           navy: { 500: { value: "#1A1F3C" } },

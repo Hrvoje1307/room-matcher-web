@@ -1,10 +1,6 @@
 "use client";
-import { Box } from "../../styled-system/jsx";
+import { LandingPage } from "@/pages/landing-page/landing-page";
 
 export default function Home() {
-  return (
-    <Box>
-      <h1>Cucko</h1>
-    </Box>
-  );
+  return <LandingPage />
 }

@@ -1,5 +1,6 @@
 export const colors = {
   navy: {
+    400:"#142044",
     500: "#1A1F3C",
   },
   coral: {
@@ -10,5 +11,8 @@ export const colors = {
   },
   sand: {
     500: "#E8E6E1",
+  },
+  grey: {
+    500:"#c5c1ba",
   },
 } as const;
