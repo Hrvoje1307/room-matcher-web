@@ -5,6 +5,7 @@ import { Box } from "../../../styled-system/jsx";
 import { Hero } from "@/shared/components/sections/hero/hero";
 import { Porcess } from "@/shared/components/sections/process/process";
 import { WhyChooseUs } from "@/shared/components/sections/why-choose-us/why-choose-us";
+import { FeaturedRooms } from "@/shared/components/sections/featured-rooms/featured-rooms";
 
 export default function LandingPage() {
     return (
@@ -26,7 +27,13 @@ export default function LandingPage() {
                         <Navigation />
                     </Container>
                 </Box>
-                <Container css={{ paddingTop: "140px", paddingBottom: "60px", backgroundColor: "cream.500" }}>
+                <Container
+                    css={{
+                        paddingTop: "140px",
+                        paddingBottom: "60px",
+                        backgroundColor: "cream.500",
+                    }}
+                >
                     <Hero />
                 </Container>
             </Box>
@@ -36,6 +43,11 @@ export default function LandingPage() {
             <Box css={{ backgroundColor: "cream.500" }}>
                 <Container>
                     <WhyChooseUs />
+                </Container>
+            </Box>
+            <Box css={{ paddingY: "90px" }}>
+                <Container>
+                    <FeaturedRooms />
                 </Container>
             </Box>
         </>
