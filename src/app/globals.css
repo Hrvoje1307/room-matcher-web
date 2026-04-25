@@ -1,1 +1,11 @@
 @layer reset, base, tokens, recipes, utilities;
+
+html {
+    scroll-behavior: smooth;
+}
+
+#kako-funkcionira,
+#o-nama,
+#oglasi {
+    scroll-margin-top: 80px;
+}

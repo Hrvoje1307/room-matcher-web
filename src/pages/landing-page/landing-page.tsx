@@ -7,6 +7,7 @@ import { Porcess } from "@/shared/components/sections/process/process";
 import { WhyChooseUs } from "@/shared/components/sections/why-choose-us/why-choose-us";
 import { FeaturedRooms } from "@/shared/components/sections/featured-rooms/featured-rooms";
 import { CtaContainer } from "@/shared/components/sections/cta-section/cta-container";
+import { Footer } from "@/shared/components/sections/footer";
 
 export default function LandingPage() {
     return (
@@ -32,15 +33,15 @@ export default function LandingPage() {
                     <Hero />
                 </Container>
             </Box>
-            <Container css={{ paddingY: "90px" }}>
+            <Container id="kako-funkcionira" css={{ paddingY: "90px" }}>
                 <Porcess />
             </Container>
-            <Box css={{ backgroundColor: "cream.500" }}>
+            <Box id="o-nama" css={{ backgroundColor: "cream.500" }}>
                 <Container>
                     <WhyChooseUs />
                 </Container>
             </Box>
-            <Box css={{ paddingY: "90px" }}>
+            <Box id="oglasi" css={{ paddingY: "90px" }}>
                 <Container>
                     <FeaturedRooms />
                 </Container>
@@ -48,6 +49,15 @@ export default function LandingPage() {
             <Box css={{ paddingY: "90px", backgroundColor: "cream.500" }}>
                 <Container>
                     <CtaContainer />
+                </Container>
+            </Box>
+            <Box
+                css={{
+                    padding: "90px",
+                }}
+            >
+                <Container>
+                    <Footer />
                 </Container>
             </Box>
         </>

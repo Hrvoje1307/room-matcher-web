@@ -30,9 +30,9 @@ export function Navigation() {
                         fontWeight: "400",
                     }}
                 >
-                    <Link href="#">Kako funkcionira</Link>
-                    <Link href="#">O nama</Link>
-                    <Link href="#">Oglasi</Link>
+                    <Link href="#kako-funkcionira">Kako funkcionira</Link>
+                    <Link href="#o-nama">O nama</Link>
+                    <Link href="#oglasi">Oglasi</Link>
                 </Box>
 
                 {/* Desktop buttons */}
@@ -91,9 +91,9 @@ export function Navigation() {
                         fontWeight: "400",
                     }}
                 >
-                    <Link href="#" onClick={() => setOpen(false)}>Kako funkcionira</Link>
-                    <Link href="#" onClick={() => setOpen(false)}>O nama</Link>
-                    <Link href="#" onClick={() => setOpen(false)}>Oglasi</Link>
+                    <Link href="#kako-funkcionira" onClick={() => setOpen(false)}>Kako funkcionira</Link>
+                    <Link href="#o-nama" onClick={() => setOpen(false)}>O nama</Link>
+                    <Link href="#oglasi" onClick={() => setOpen(false)}>Oglasi</Link>
                     <Box css={{ display: "flex", gap: "8px", paddingTop: "8px" }}>
                         <Button variant="ghost" size="sm">Prijava</Button>
                         <Button variant="primary" size="sm">Registracija</Button>
