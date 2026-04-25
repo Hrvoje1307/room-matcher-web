@@ -26,6 +26,7 @@ export const buttonRecipe = defineRecipe({
                 color: "white",
                 _hover: { opacity: 0.85 },
             },
+            
             outline: {
                 bg: "transparent",
                 border: "1px solid",
@@ -37,6 +38,11 @@ export const buttonRecipe = defineRecipe({
                 bg: "transparent",
                 color: "navy.500",
                 _hover: { color: "sand.500" },
+            },
+            white: {
+                bg: "white",
+                color: "navy.500",
+                _hover: { opacity: 0.92 },
             },
         },
         size: {
