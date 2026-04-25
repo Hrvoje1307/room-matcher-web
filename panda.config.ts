@@ -3,9 +3,7 @@ import { buttonRecipe } from "./src/theme/recipes/button.recipe";
 import { colors } from "./src/shared/config/colors";
 
 function toTokens(scale: Record<string, string>) {
-    return Object.fromEntries(
-        Object.entries(scale).map(([k, v]) => [k, { value: v }])
-    );
+    return Object.fromEntries(Object.entries(scale).map(([k, v]) => [k, { value: v }]));
 }
 
 export default defineConfig({
@@ -25,7 +23,7 @@ export default defineConfig({
                     coral: toTokens(colors.coral),
                     cream: toTokens(colors.cream),
                     sand: toTokens(colors.sand),
-                    grey: toTokens(colors.grey),
+                    gray: toTokens(colors.gray),
                 },
             },
         },

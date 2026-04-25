@@ -7,24 +7,26 @@ import { Porcess } from "@/shared/components/sections/process/process";
 
 export default function LandingPage() {
     return (
-        <Box>
-            <Box
-                css={{
-                    borderBottom: "1px solid",
-                    borderColor: "grey.400",
-                    backgroundColor: "cream.500",
-                }}
-            >
-                <Container>
-                    <Navigation />
+        <>
+            <Box css={{ backgroundColor: "cream.500" }}>
+                <Box
+                    css={{
+                        borderBottom: "1px solid",
+                        borderColor: "gray.400",
+                        backgroundColor: "cream.500",
+                    }}
+                >
+                    <Container>
+                        <Navigation />
+                    </Container>
+                </Box>
+                <Container css={{ paddingY: "60px", backgroundColor: "cream.500" }}>
+                    <Hero />
                 </Container>
             </Box>
-            <Container css={{ paddingY: "60px", backgroundColor: "cream.500" }}>
-                <Hero />
-            </Container>
-            <Container css={{ paddingY: "80px" }}>
+            <Container css={{ paddingY: "90px" }}>
                 <Porcess />
             </Container>
-        </Box>
+        </>
     );
 }

@@ -29,9 +29,9 @@ export const buttonRecipe = defineRecipe({
             outline: {
                 bg: "transparent",
                 border: "1px solid",
-                borderColor: "grey.500",
-                color: "grey.600",
-                _hover: { bg: "grey.100", color: "navy.600", borderColor:"grey.600" },
+                borderColor: "gray.500",
+                color: "gray.600",
+                _hover: { bg: "gray.100", color: "navy.600", borderColor: "gray.600" },
             },
             ghost: {
                 bg: "transparent",

@@ -42,7 +42,7 @@ export function HeroMain() {
                 <styled.p
                     css={{
                         fontSize: "18px",
-                        color: "grey.600",
+                        color: "gray.600",
                         marginTop: "22px",
                         fontWeight: "500",
                     }}
