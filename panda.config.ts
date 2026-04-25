@@ -1,25 +1,35 @@
 import { defineConfig } from "@pandacss/dev";
+import { buttonRecipe } from "./src/theme/recipes/button.recipe";
+import { colors } from "./src/shared/config/colors";
+
+function toTokens(scale: Record<string, string>) {
+    return Object.fromEntries(Object.entries(scale).map(([k, v]) => [k, { value: v }]));
+}
 
 export default defineConfig({
-  preflight: true,
+    preflight: true,
 
-  include: ["./src/**/*.{js,jsx,ts,tsx}"],
-  exclude: [],
+    include: ["./src/**/*.{js,jsx,ts,tsx}"],
+    exclude: [],
 
-  theme: {
-    extend: {
-      tokens: {
-        colors: {
-          navy: { 500: { value: "#1A1F3C" } },
-          coral: { 500: { value: "#FF6B4A" } },
-          cream: { 500: { value: "#F8F7F4" } },
-          sand: { 500: { value: "#E8E6E1" } },
+    theme: {
+        extend: {
+            recipes: {
+                button: buttonRecipe,
+            },
+            tokens: {
+                colors: {
+                    navy: toTokens(colors.navy),
+                    coral: toTokens(colors.coral),
+                    cream: toTokens(colors.cream),
+                    sand: toTokens(colors.sand),
+                    gray: toTokens(colors.gray),
+                },
+            },
         },
-      },
     },
-  },
 
-  jsxFramework: "react",
+    jsxFramework: "react",
 
-  outdir: "styled-system",
+    outdir: "styled-system",
 });

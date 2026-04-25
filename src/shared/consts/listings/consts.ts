@@ -1,1 +1,0 @@
-export const LISTINGS_QUERY_KEY = "listings"
