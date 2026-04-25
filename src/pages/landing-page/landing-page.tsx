@@ -4,6 +4,7 @@ import { Container } from "@/shared/components/ui/container";
 import { Box } from "../../../styled-system/jsx";
 import { Hero } from "@/shared/components/sections/hero/hero";
 import { Porcess } from "@/shared/components/sections/process/process";
+import { WhyChooseUs } from "@/shared/components/sections/why-choose-us/why-choose-us";
 
 export default function LandingPage() {
     return (
@@ -11,6 +12,11 @@ export default function LandingPage() {
             <Box css={{ backgroundColor: "cream.500" }}>
                 <Box
                     css={{
+                        position: "fixed",
+                        top: "0",
+                        left: "0",
+                        right: "0",
+                        zIndex: "50",
                         borderBottom: "1px solid",
                         borderColor: "gray.400",
                         backgroundColor: "cream.500",
@@ -20,13 +26,18 @@ export default function LandingPage() {
                         <Navigation />
                     </Container>
                 </Box>
-                <Container css={{ paddingY: "60px", backgroundColor: "cream.500" }}>
+                <Container css={{ paddingTop: "140px", paddingBottom: "60px", backgroundColor: "cream.500" }}>
                     <Hero />
                 </Container>
             </Box>
             <Container css={{ paddingY: "90px" }}>
                 <Porcess />
             </Container>
+            <Box css={{ backgroundColor: "cream.500" }}>
+                <Container>
+                    <WhyChooseUs />
+                </Container>
+            </Box>
         </>
     );
 }
