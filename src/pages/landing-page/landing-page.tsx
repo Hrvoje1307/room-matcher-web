@@ -1,5 +1,5 @@
 "use client";
-import { Navigation } from "@/shared/components/sections/navigation";
+import { Navigation } from "@/shared/components/sections/navigations/main-navigation";
 import { Container } from "@/shared/components/ui/container";
 import { Box } from "../../../styled-system/jsx";
 import { Hero } from "@/shared/components/sections/hero/hero";

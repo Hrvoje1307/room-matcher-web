@@ -1,7 +1,8 @@
+"use client";
 import Link from "next/link";
-import { Box, styled } from "../../../../styled-system/jsx";
-import { Logo } from "../ui/logo";
-import { Button } from "../ui/button";
+import { Box, styled } from "../../../../../styled-system/jsx";
+import { Logo } from "../../ui/logo";
+import { Button } from "../../ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
@@ -37,8 +38,16 @@ export function Navigation() {
 
                 {/* Desktop buttons */}
                 <Box css={{ display: { base: "none", md: "flex" } }}>
-                    <Button variant="ghost" size="sm">Prijava</Button>
-                    <Button variant="primary" size="sm">Registracija</Button>
+                    <Link href="/login">
+                        <Button variant="ghost" size="sm">
+                            Prijava
+                        </Button>
+                    </Link>
+                    <Link href="/registration">
+                        <Button variant="primary" size="sm">
+                            Registracija
+                        </Button>
+                    </Link>
                 </Box>
 
                 {/* Hamburger */}
@@ -91,12 +100,26 @@ export function Navigation() {
                         fontWeight: "400",
                     }}
                 >
-                    <Link href="#kako-funkcionira" onClick={() => setOpen(false)}>Kako funkcionira</Link>
-                    <Link href="#o-nama" onClick={() => setOpen(false)}>O nama</Link>
-                    <Link href="#oglasi" onClick={() => setOpen(false)}>Oglasi</Link>
+                    <Link href="#kako-funkcionira" onClick={() => setOpen(false)}>
+                        Kako funkcionira
+                    </Link>
+                    <Link href="#o-nama" onClick={() => setOpen(false)}>
+                        O nama
+                    </Link>
+                    <Link href="#oglasi" onClick={() => setOpen(false)}>
+                        Oglasi
+                    </Link>
                     <Box css={{ display: "flex", gap: "8px", paddingTop: "8px" }}>
-                        <Button variant="ghost" size="sm">Prijava</Button>
-                        <Button variant="primary" size="sm">Registracija</Button>
+                        <Link href="/login">
+                            <Button variant="ghost" size="sm">
+                                Prijava
+                            </Button>
+                        </Link>
+                        <Link href="/registration">
+                            <Button variant="primary" size="sm">
+                                Registracija
+                            </Button>
+                        </Link>
                     </Box>
                 </Box>
             </Box>
