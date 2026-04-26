@@ -43,9 +43,11 @@ export function Navigation() {
                             Prijava
                         </Button>
                     </Link>
-                    <Button variant="primary" size="sm">
-                        Registracija
-                    </Button>
+                    <Link href="/registration">
+                        <Button variant="primary" size="sm">
+                            Registracija
+                        </Button>
+                    </Link>
                 </Box>
 
                 {/* Hamburger */}
@@ -108,12 +110,16 @@ export function Navigation() {
                         Oglasi
                     </Link>
                     <Box css={{ display: "flex", gap: "8px", paddingTop: "8px" }}>
-                        <Button variant="ghost" size="sm">
-                            Prijava
-                        </Button>
-                        <Button variant="primary" size="sm">
-                            Registracija
-                        </Button>
+                        <Link href="/login">
+                            <Button variant="ghost" size="sm">
+                                Prijava
+                            </Button>
+                        </Link>
+                        <Link href="/registration">
+                            <Button variant="primary" size="sm">
+                                Registracija
+                            </Button>
+                        </Link>
                     </Box>
                 </Box>
             </Box>

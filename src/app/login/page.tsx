@@ -63,7 +63,7 @@ export default function Page() {
                     <styled.p css={{ fontSize: "14px", color: "gray.600", marginBottom: "32px" }}>
                         Nemaš račun?{" "}
                         <Link
-                            href="#"
+                            href="/registration"
                             className={css({ color: "coral.500", fontWeight: "600", _hover: { color: "coral.600" } })}
                         >
                             Registriraj se besplatno
