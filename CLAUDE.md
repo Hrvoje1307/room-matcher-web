@@ -1,4 +1,5 @@
 @AGENTS.md
+@STYLING.md
 
 # Project: Cimer (room-matcher-web)
 
