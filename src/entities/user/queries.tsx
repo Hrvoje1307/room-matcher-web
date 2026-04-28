@@ -30,6 +30,6 @@ export function getUserByIdQueryOptions(userId: string) {
 export function getCurrentUser() {
     return queryOptions({
         queryKey: usersQueryKeys.all(),
-        queryFn: () => fetchData({ url: `/users/me` }),
+        queryFn: () => fetchData({ url: `/api/users/me` }),
     });
 }

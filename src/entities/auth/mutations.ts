@@ -15,6 +15,8 @@ export interface RegisterRequest {
     email: string;
     password: string;
     name: string;
+    gender: "MALE" | "FEMALE" | "OTHER";
+    dateOfBirth: string;
 }
 
 export function loginMutationOptions() {

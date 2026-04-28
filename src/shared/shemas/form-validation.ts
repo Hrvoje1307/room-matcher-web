@@ -16,16 +16,13 @@ export type LoginFormValues = z.infer<typeof loginSchema>;
 
 export const registrationSchema = z
     .object({
+        name: z.string().min(2, "Unesite svoje ime"),
         username: z.string().min(3, "Korisničko ime mora imati najmanje 3 znaka"),
-        fullName: z.string().min(5, "Mora sadržavati najmanje 5 znakova"),
         email: z.string().email("Unesite valjanu email adresu"),
+        gender: z.enum(["MALE", "FEMALE", "OTHER"] as const, { message: "Odaberite spol" }),
+        dateOfBirth: z.string().min(1, "Unesite datum rođenja"),
         password: passwordSchema,
         confirmPassword: z.string(),
-        city: z.string().min(2, "Unesite naziv grada"),
-        phone: z.string().optional(),
-        lookingFor: z.enum(["oboje", "trazim-sobu", "nudim-sobu"] as const, {
-            message: "Odaberite što tražite",
-        }),
     })
     .refine((data) => data.password === data.confirmPassword, {
         message: "Lozinke se ne podudaraju",

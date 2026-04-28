@@ -25,7 +25,7 @@ export default function Page() {
         ...loginMutationOptions(),
         onSuccess(data) {
             authTokens.set(data.accessToken, data.refreshToken);
-            router.push("/");
+            router.push("/listings");
         },
         onError() {
             setServerError("Pogrešno korisničko ime ili lozinka.");

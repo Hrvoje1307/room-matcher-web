@@ -36,6 +36,20 @@ const labelCss = css({
     letterSpacing: "0.08em", textTransform: "uppercase", color: "gray.600", marginBottom: "8px",
 });
 
+const selectCss = css({
+    width: "100%", backgroundColor: "white", border: "1px solid",
+    borderColor: "gray.400", borderRadius: "12px", padding: "12px 16px",
+    fontSize: "14px", color: "navy.500", outline: "none", cursor: "pointer", appearance: "auto",
+    _focus: { borderColor: "coral.400", boxShadow: "0 0 0 3px token(colors.coral.100)" },
+});
+
+const selectErrorCss = css({
+    width: "100%", backgroundColor: "white", border: "1px solid",
+    borderColor: "red.400", borderRadius: "12px", padding: "12px 16px",
+    fontSize: "14px", color: "navy.500", outline: "none", cursor: "pointer", appearance: "auto",
+    _focus: { borderColor: "red.400", boxShadow: "0 0 0 3px token(colors.coral.100)" },
+});
+
 export default function Page() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
@@ -60,24 +74,25 @@ export default function Page() {
         resolver: zodResolver(registrationSchema),
         mode: "onChange",
         defaultValues: {
+            name: "",
             username: "",
-            fullName: "",
             email: "",
+            gender: "MALE",
+            dateOfBirth: "",
             password: "",
             confirmPassword: "",
-            city: "",
-            phone: "",
-            lookingFor: "oboje",
         },
     });
 
     function onSubmit(data: RegistrationFormValues) {
         setServerError(null);
         registerUser({
+            name: data.name,
             username: data.username,
             email: data.email,
             password: data.password,
-            name: data.fullName,
+            gender: data.gender,
+            dateOfBirth: data.dateOfBirth,
         });
     }
 
@@ -85,9 +100,7 @@ export default function Page() {
         <Box css={{ backgroundColor: "cream.500", minHeight: "100dvh" }}>
             <Box css={{ borderBottom: "1px solid #e0deda", paddingY: "20px" }}>
                 <Container>
-                    <Link href="/">
-                        <Logo />
-                    </Link>
+                    <Link href="/"><Logo /></Link>
                 </Container>
             </Box>
             <Box css={{ display: "flex", justifyContent: "center", paddingTop: "48px", paddingBottom: "60px", paddingX: "16px" }}>
@@ -109,25 +122,43 @@ export default function Page() {
                     )}
 
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        {/* Ime i prezime */}
+                        {/* Ime */}
                         <Box css={{ marginBottom: "20px" }}>
-                            <label className={labelCss}>Ime i prezime</label>
-                            <input {...register("fullName")} type="text" placeholder="Ana Anić" className={errors.fullName ? inputErrorCss : inputCss} />
-                            {errors.fullName && <styled.p css={{ fontSize: "12px", color: "red.500", marginTop: "4px" }}>{errors.fullName.message}</styled.p>}
+                            <label className={labelCss}>Ime</label>
+                            <input {...register("name")} type="text" placeholder="Marko Marković" className={errors.name ? inputErrorCss : inputCss} />
+                            {errors.name && <styled.p css={{ fontSize: "12px", color: "red.500", marginTop: "4px" }}>{errors.name.message}</styled.p>}
                         </Box>
 
                         {/* Korisničko ime */}
                         <Box css={{ marginBottom: "20px" }}>
                             <label className={labelCss}>Korisničko ime</label>
-                            <input {...register("username")} type="text" placeholder="ana123" className={errors.username ? inputErrorCss : inputCss} />
+                            <input {...register("username")} type="text" placeholder="marko123" className={errors.username ? inputErrorCss : inputCss} />
                             {errors.username && <styled.p css={{ fontSize: "12px", color: "red.500", marginTop: "4px" }}>{errors.username.message}</styled.p>}
                         </Box>
 
                         {/* Email */}
                         <Box css={{ marginBottom: "20px" }}>
                             <label className={labelCss}>Email</label>
-                            <input {...register("email")} type="email" placeholder="ana@primjer.hr" className={errors.email ? inputErrorCss : inputCss} />
+                            <input {...register("email")} type="email" placeholder="marko@primjer.hr" className={errors.email ? inputErrorCss : inputCss} />
                             {errors.email && <styled.p css={{ fontSize: "12px", color: "red.500", marginTop: "4px" }}>{errors.email.message}</styled.p>}
+                        </Box>
+
+                        {/* Spol + Datum rođenja */}
+                        <Box css={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "20px" }}>
+                            <Box>
+                                <label className={labelCss}>Spol</label>
+                                <select {...register("gender")} className={errors.gender ? selectErrorCss : selectCss}>
+                                    <option value="MALE">Muški</option>
+                                    <option value="FEMALE">Ženski</option>
+                                    <option value="OTHER">Ostalo</option>
+                                </select>
+                                {errors.gender && <styled.p css={{ fontSize: "12px", color: "red.500", marginTop: "4px" }}>{errors.gender.message}</styled.p>}
+                            </Box>
+                            <Box>
+                                <label className={labelCss}>Datum rođenja</label>
+                                <input {...register("dateOfBirth")} type="date" className={errors.dateOfBirth ? inputErrorCss : inputCss} />
+                                {errors.dateOfBirth && <styled.p css={{ fontSize: "12px", color: "red.500", marginTop: "4px" }}>{errors.dateOfBirth.message}</styled.p>}
+                            </Box>
                         </Box>
 
                         {/* Lozinka */}
@@ -141,8 +172,8 @@ export default function Page() {
                                     className={css({
                                         width: "100%", backgroundColor: "white", border: "1px solid",
                                         borderColor: errors.password ? "red.400" : "gray.400",
-                                        borderRadius: "12px", padding: "12px 48px 12px 16px", fontSize: "14px",
-                                        color: "navy.500", outline: "none",
+                                        borderRadius: "12px", padding: "12px 48px 12px 16px",
+                                        fontSize: "14px", color: "navy.500", outline: "none",
                                         _placeholder: { color: "gray.500" },
                                         _focus: { borderColor: "coral.400", boxShadow: "0 0 0 3px token(colors.coral.100)" },
                                     })}
@@ -156,7 +187,7 @@ export default function Page() {
                         </Box>
 
                         {/* Ponovite lozinku */}
-                        <Box css={{ marginBottom: "20px" }}>
+                        <Box css={{ marginBottom: "28px" }}>
                             <label className={labelCss}>Ponovite lozinku</label>
                             <Box css={{ position: "relative" }}>
                                 <input
@@ -166,8 +197,8 @@ export default function Page() {
                                     className={css({
                                         width: "100%", backgroundColor: "white", border: "1px solid",
                                         borderColor: errors.confirmPassword ? "red.400" : "gray.400",
-                                        borderRadius: "12px", padding: "12px 48px 12px 16px", fontSize: "14px",
-                                        color: "navy.500", outline: "none",
+                                        borderRadius: "12px", padding: "12px 48px 12px 16px",
+                                        fontSize: "14px", color: "navy.500", outline: "none",
                                         _placeholder: { color: "gray.500" },
                                         _focus: { borderColor: "coral.400", boxShadow: "0 0 0 3px token(colors.coral.100)" },
                                     })}
@@ -178,38 +209,6 @@ export default function Page() {
                                 </styled.button>
                             </Box>
                             {errors.confirmPassword && <styled.p css={{ fontSize: "12px", color: "red.500", marginTop: "4px" }}>{errors.confirmPassword.message}</styled.p>}
-                        </Box>
-
-                        {/* Grad + Telefon */}
-                        <Box css={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "20px" }}>
-                            <Box>
-                                <label className={labelCss}>Grad</label>
-                                <input {...register("city")} type="text" placeholder="Zagreb" className={errors.city ? inputErrorCss : inputCss} />
-                                {errors.city && <styled.p css={{ fontSize: "12px", color: "red.500", marginTop: "4px" }}>{errors.city.message}</styled.p>}
-                            </Box>
-                            <Box>
-                                <label className={labelCss}>Telefon (opcionalno)</label>
-                                <input {...register("phone")} type="tel" placeholder="+385..." className={inputCss} />
-                            </Box>
-                        </Box>
-
-                        {/* Što tražiš */}
-                        <Box css={{ marginBottom: "28px" }}>
-                            <label className={labelCss}>Što tražiš?</label>
-                            <styled.select
-                                {...register("lookingFor")}
-                                css={{
-                                    width: "100%", backgroundColor: "white", border: "1px solid",
-                                    borderColor: errors.lookingFor ? "red.400" : "gray.400",
-                                    borderRadius: "12px", padding: "12px 16px", fontSize: "14px",
-                                    color: "navy.500", outline: "none", cursor: "pointer", appearance: "auto",
-                                    _focus: { borderColor: "coral.400", boxShadow: "0 0 0 3px token(colors.coral.100)" },
-                                }}
-                            >
-                                <option value="oboje">Oboje</option>
-                                <option value="trazim-sobu">Tražim sobu</option>
-                                <option value="nudim-sobu">Nudim sobu</option>
-                            </styled.select>
                         </Box>
 
                         <Button
