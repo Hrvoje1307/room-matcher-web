@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { Box, styled } from "../../../../../styled-system/jsx";
 import { Button } from "../../ui/button";
 
@@ -97,9 +98,11 @@ export function CtaContainer() {
 
             {/* Button */}
             <Box css={{ position: "relative", zIndex: "1", flexShrink: "0" }}>
-                <Button variant="white" size="lg">
-                    Počni odmah <ArrowRight size={18} />
-                </Button>
+                <Link href="/login">
+                    <Button variant="white" size="lg">
+                        Počni odmah <ArrowRight size={18} />
+                    </Button>
+                </Link>
             </Box>
         </Box>
     );

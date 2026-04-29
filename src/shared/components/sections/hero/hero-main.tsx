@@ -1,4 +1,5 @@
 import { ArrowRight, Search } from "lucide-react";
+import Link from "next/link";
 import { Box, styled } from "../../../../../styled-system/jsx";
 import { Button } from "../../ui/button";
 import { House } from "../../svg/house";
@@ -60,13 +61,17 @@ export function HeroMain() {
                         gap: "18px",
                     }}
                 >
-                    <Button size="md">
-                        Objavi sobu <ArrowRight width={18} height={18} />
-                    </Button>
-                    <Button size={"md"} variant={"outline"}>
-                        <Search width={18} height={18} />
-                        Traži cimera
-                    </Button>
+                    <Link href="/login">
+                        <Button size="md">
+                            Objavi sobu <ArrowRight width={18} height={18} />
+                        </Button>
+                    </Link>
+                    <Link href="/login">
+                        <Button size={"md"} variant={"outline"}>
+                            <Search width={18} height={18} />
+                            Traži cimera
+                        </Button>
+                    </Link>
                 </Box>
             </Box>
             <Box
