@@ -5,6 +5,9 @@ import { Box, styled } from "../../../../../styled-system/jsx";
 import { Logo } from "../../ui/logo";
 import { Heart, LogOut } from "lucide-react";
 import { Container } from "../../ui/container";
+import { authTokens } from "@/shared/utils/auth-tokens";
+import { fetchData } from "@/shared/hooks/fetchData";
+import { useRouter } from "next/navigation";
 
 interface AppNavigationProps {
     username: string;
@@ -12,6 +15,16 @@ interface AppNavigationProps {
 }
 
 export function AppNavigation({ username, favoritesCount = 0 }: AppNavigationProps) {
+    const router = useRouter();
+
+    async function handleLogout() {
+        try {
+            await fetchData({ url: "/api/auth/logout", method: "POST" });
+        } finally {
+            authTokens.clear();
+            router.push("/login");
+        }
+    }
     return (
         <Box
             css={{
@@ -100,6 +113,7 @@ export function AppNavigation({ username, favoritesCount = 0 }: AppNavigationPro
 
                         {/* Logout */}
                         <styled.button
+                            onClick={handleLogout}
                             css={{
                                 display: "flex",
                                 alignItems: "center",
