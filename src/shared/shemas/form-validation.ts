@@ -1,17 +1,5 @@
 import { z } from "zod";
 
-export const loginSchema = z.object({
-    email: z.string().email("Unesite valjanu email adresu"),
-    password: z
-        .string()
-        .min(8, "Lozinka mora imati najmanje 8 znakova")
-        .regex(/[A-Z]/, "Lozinka mora sadržavati najmanje jedno veliko slovo")
-        .regex(/[0-9]/, "Lozinka mora sadržavati najmanje jedan broj")
-        .regex(/[^A-Za-z0-9]/, "Lozinka mora sadržavati najmanje jedan poseban znak"),
-});
-
-export type LoginFormValues = z.infer<typeof loginSchema>;
-
 const passwordSchema = z
     .string()
     .min(8, "Lozinka mora imati najmanje 8 znakova")
@@ -19,17 +7,22 @@ const passwordSchema = z
     .regex(/[0-9]/, "Lozinka mora sadržavati najmanje jedan broj")
     .regex(/[^A-Za-z0-9]/, "Lozinka mora sadržavati najmanje jedan poseban znak");
 
+export const loginSchema = z.object({
+    username: z.string().min(3, "Unesite korisničko ime"),
+    password: passwordSchema,
+});
+
+export type LoginFormValues = z.infer<typeof loginSchema>;
+
 export const registrationSchema = z
     .object({
-        fullName: z.string().min(5, "Mora sadržavati najmanje 5 znakova"),
+        name: z.string().min(2, "Unesite svoje ime"),
+        username: z.string().min(3, "Korisničko ime mora imati najmanje 3 znaka"),
         email: z.string().email("Unesite valjanu email adresu"),
+        gender: z.enum(["MALE", "FEMALE", "OTHER"] as const, { message: "Odaberite spol" }),
+        dateOfBirth: z.string().min(1, "Unesite datum rođenja"),
         password: passwordSchema,
         confirmPassword: z.string(),
-        city: z.string().min(2, "Unesite naziv grada"),
-        phone: z.string().optional(),
-        lookingFor: z.enum(["oboje", "trazim-sobu", "nudim-sobu"] as const, {
-            message: "Odaberite što tražite",
-        }),
     })
     .refine((data) => data.password === data.confirmPassword, {
         message: "Lozinke se ne podudaraju",
