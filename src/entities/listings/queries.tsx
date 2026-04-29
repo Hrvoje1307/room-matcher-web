@@ -20,36 +20,41 @@ export const listingsQueryKeys = {
     },
 };
 
-type newListingProps = {
-    id: string;
+export interface ListingImageResponse {
+    id: number;
+    imageUrl: string;
+}
+
+export interface ListingResponse {
+    id: number;
     title: string;
     address: string;
-    price: string;
+    price: number;
     size: number;
-    roomCount: number;
     description: string;
-    availableForm: string;
+    availableFrom: string;
     isActive: boolean;
-};
+    images: ListingImageResponse[];
+}
 
 export function getAllListingsQueryOptions() {
     return queryOptions({
         queryKey: listingsQueryKeys.all(),
-        queryFn: () => fetchData({ url: `/listings` }),
+        queryFn: () => fetchData({ url: `/api/listings` }) as Promise<ListingResponse[]>,
     });
 }
 
 export function getListingByIdQueryOptions(listingId: string) {
     return queryOptions({
-        queryKey: listingsQueryKeys.details(),
-        queryFn: () => fetchData({ url: `/listings/${listingId}` }),
+        queryKey: listingsQueryKeys.detail(listingId),
+        queryFn: () => fetchData({ url: `/api/listings/${listingId}` }) as Promise<ListingResponse>,
     });
 }
 
 export function addListingMutationOptions() {
     return {
-        mutationFn: async (newListing: newListingProps) => {
-            await fetchData({ url: `/listings`, body: newListing, method: "POST" });
+        mutationFn: async (newListing: Omit<ListingResponse, "id" | "images">) => {
+            await fetchData({ url: `/api/listings`, body: newListing, method: "POST" });
         },
     };
 }
@@ -57,7 +62,7 @@ export function addListingMutationOptions() {
 export function removeListingMutationOptions() {
     return {
         mutationFn: async (listingId: string) => {
-            await fetchData({ url: `/listings/${listingId}`, method: "DELETE" });
+            await fetchData({ url: `/api/listings/${listingId}`, method: "DELETE" });
         },
     };
 }

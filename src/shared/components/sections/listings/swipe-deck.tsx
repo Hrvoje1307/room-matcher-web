@@ -3,18 +3,43 @@
 import { useState, useRef } from "react";
 import { Box, styled } from "../../../../../styled-system/jsx";
 import { X, Heart, MapPin } from "lucide-react";
-import { mockListings, type MockListing } from "@/shared/data/mock-listings";
+import { useQuery } from "@tanstack/react-query";
+import { getAllListingsQueryOptions, type ListingResponse } from "@/entities/listings/queries";
 
-export function SwipeDeck() {
+interface SwipeDeckProps {
+    onFavorite?: () => void;
+}
+
+export function SwipeDeck({ onFavorite }: SwipeDeckProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [favoritesCount, setFavoritesCount] = useState(0);
+    const [localFavoritesCount, setLocalFavoritesCount] = useState(0);
 
-    const isFinished = currentIndex >= mockListings.length;
-    const current = mockListings[currentIndex];
-    const next = mockListings[currentIndex + 1];
+    const { data: listings, isLoading, isError } = useQuery(getAllListingsQueryOptions());
+
+    if (isLoading) {
+        return (
+            <Box css={{ display: "flex", alignItems: "center", justifyContent: "center", height: "60vh" }}>
+                <styled.p css={{ fontSize: "16px", color: "gray.500" }}>Učitavanje oglasa...</styled.p>
+            </Box>
+        );
+    }
+
+    if (isError || !listings) {
+        return (
+            <Box css={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "8px", height: "60vh" }}>
+                <styled.p css={{ fontSize: "20px", fontWeight: "700", color: "navy.500" }}>Greška pri učitavanju</styled.p>
+                <styled.p css={{ fontSize: "14px", color: "gray.500" }}>Pokušajte ponovo</styled.p>
+            </Box>
+        );
+    }
+
+    const isFinished = currentIndex >= listings.length;
+    const current = listings[currentIndex];
+    const next = listings[currentIndex + 1];
 
     function handleFavorite() {
-        setFavoritesCount((n) => n + 1);
+        setLocalFavoritesCount((n) => n + 1);
+        onFavorite?.();
         setCurrentIndex((i) => i + 1);
     }
 
@@ -30,7 +55,7 @@ export function SwipeDeck() {
                     Pregledali ste sve oglase!
                 </styled.p>
                 <styled.p css={{ fontSize: "14px", color: "gray.500" }}>
-                    Dodali ste {favoritesCount} {favoritesCount === 1 ? "oglas" : "oglasa"} u favorite
+                    Dodali ste {localFavoritesCount} {localFavoritesCount === 1 ? "oglas" : "oglasa"} u favorite
                 </styled.p>
             </Box>
         );
@@ -61,10 +86,16 @@ export function SwipeDeck() {
                             boxShadow: "0 4px 16px rgba(0,0,0,0.06)",
                         }}
                     >
-                        <Box
-                            style={{ backgroundImage: `url(${next.images[0]})`, backgroundSize: "cover", backgroundPosition: "center" }}
-                            css={{ height: "58%", width: "100%" }}
-                        />
+                        {next.images.length > 0 ? (
+                            <Box
+                                style={{ backgroundImage: `url(${next.images[0].imageUrl})`, backgroundSize: "cover", backgroundPosition: "center" }}
+                                css={{ height: "58%", width: "100%" }}
+                            />
+                        ) : (
+                            <Box css={{ height: "58%", width: "100%", backgroundColor: "sand.200", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <styled.p css={{ fontSize: "13px", color: "gray.500" }}>Nema slike nažalost</styled.p>
+                            </Box>
+                        )}
                     </Box>
                 )}
 
@@ -82,7 +113,7 @@ export function SwipeDeck() {
 }
 
 interface SwipeCardProps {
-    listing: MockListing;
+    listing: ListingResponse;
     onFavorite: () => void;
     onSkip: () => void;
 }
@@ -104,6 +135,8 @@ function SwipeCard({ listing, onFavorite, onSkip }: SwipeCardProps) {
     const rotation = position.x * 0.06;
     const skipOpacity = Math.min(1, Math.max(0, -position.x / SWIPE_THRESHOLD));
     const favoriteOpacity = Math.min(1, Math.max(0, position.x / SWIPE_THRESHOLD));
+
+    const hasImages = listing.images.length > 0;
 
     function triggerSwipe(dir: "left" | "right") {
         setSwipeDir(dir);
@@ -134,8 +167,7 @@ function SwipeCard({ listing, onFavorite, onSkip }: SwipeCardProps) {
         const dy = e.clientY - pointerDownClient.current.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        // It was a tap — check if it landed in the image area
-        if (dist < TAP_THRESHOLD && cardRef.current) {
+        if (dist < TAP_THRESHOLD && cardRef.current && hasImages) {
             const rect = cardRef.current.getBoundingClientRect();
             const relY = pointerDownClient.current.y - rect.top;
 
@@ -151,7 +183,6 @@ function SwipeCard({ listing, onFavorite, onSkip }: SwipeCardProps) {
             }
         }
 
-        // It was a drag — decide swipe or snap back
         if (position.x > SWIPE_THRESHOLD) triggerSwipe("right");
         else if (position.x < -SWIPE_THRESHOLD) triggerSwipe("left");
         else setPosition({ x: 0, y: 0 });
@@ -200,32 +231,46 @@ function SwipeCard({ listing, onFavorite, onSkip }: SwipeCardProps) {
                     <styled.span css={{ fontSize: "20px", fontWeight: "800", color: "navy.500", letterSpacing: "0.06em" }}>FAVORIT</styled.span>
                 </Box>
 
-                {/* Image */}
+                {/* Image area */}
                 <Box css={{ flex: "0 0 58%", position: "relative", overflow: "hidden" }}>
-                    <Box
-                        style={{ backgroundImage: `url(${listing.images[photoIndex]})`, backgroundSize: "cover", backgroundPosition: "center", width: "100%", height: "100%", transition: "opacity 0.2s ease" }}
-                    />
+                    {hasImages ? (
+                        <>
+                            <Box
+                                style={{ backgroundImage: `url(${listing.images[photoIndex]?.imageUrl})`, backgroundSize: "cover", backgroundPosition: "center", width: "100%", height: "100%", transition: "opacity 0.2s ease" }}
+                            />
 
-                    {/* Bottom gradient */}
-                    <Box style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "80px", background: "linear-gradient(to top, rgba(0,0,0,0.28), transparent)", pointerEvents: "none" }} />
+                            {/* Bottom gradient */}
+                            <Box style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "80px", background: "linear-gradient(to top, rgba(0,0,0,0.28), transparent)", pointerEvents: "none" }} />
 
-                    {/* Photo progress bars */}
-                    {listing.images.length > 1 && (
-                        <Box css={{ position: "absolute", top: "12px", left: "12px", right: "12px", display: "flex", gap: "4px", zIndex: "5" }} style={{ pointerEvents: "none" }}>
-                            {listing.images.map((_, i) => (
-                                <Box
-                                    key={i}
-                                    css={{ flex: "1", height: "3px", borderRadius: "2px" }}
-                                    style={{ backgroundColor: i === photoIndex ? "white" : "rgba(255,255,255,0.4)", transition: "background-color 0.2s" }}
-                                />
-                            ))}
+                            {/* Photo progress bars */}
+                            {listing.images.length > 1 && (
+                                <Box css={{ position: "absolute", top: "12px", left: "12px", right: "12px", display: "flex", gap: "4px", zIndex: "5" }} style={{ pointerEvents: "none" }}>
+                                    {listing.images.map((_, i) => (
+                                        <Box
+                                            key={i}
+                                            css={{ flex: "1", height: "3px", borderRadius: "2px" }}
+                                            style={{ backgroundColor: i === photoIndex ? "white" : "rgba(255,255,255,0.4)", transition: "background-color 0.2s" }}
+                                        />
+                                    ))}
+                                </Box>
+                            )}
+
+                            {/* Price badge */}
+                            <Box css={{ position: "absolute", bottom: "14px", left: "14px", backgroundColor: "white", borderRadius: "999px", paddingX: "14px", paddingY: "6px", fontSize: "13px", fontWeight: "700", color: "navy.500", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>
+                                {listing.price}€/mj
+                            </Box>
+                        </>
+                    ) : (
+                        <Box css={{ width: "100%", height: "100%", backgroundColor: "sand.200", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                            <styled.span css={{ fontSize: "40px" }}>🏠</styled.span>
+                            <styled.p css={{ fontSize: "13px", color: "gray.500" }}>Nema slike nažalost</styled.p>
+
+                            {/* Price badge without image */}
+                            <Box css={{ position: "absolute", bottom: "14px", left: "14px", backgroundColor: "white", borderRadius: "999px", paddingX: "14px", paddingY: "6px", fontSize: "13px", fontWeight: "700", color: "navy.500", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>
+                                {listing.price}€/mj
+                            </Box>
                         </Box>
                     )}
-
-                    {/* Price badge */}
-                    <Box css={{ position: "absolute", bottom: "14px", left: "14px", backgroundColor: "white", borderRadius: "999px", paddingX: "14px", paddingY: "6px", fontSize: "13px", fontWeight: "700", color: "navy.500", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>
-                        {listing.price}€/mj
-                    </Box>
                 </Box>
 
                 {/* Body */}
@@ -233,22 +278,23 @@ function SwipeCard({ listing, onFavorite, onSkip }: SwipeCardProps) {
                     <styled.h3 css={{ fontSize: "20px", fontWeight: "700", color: "navy.500", marginBottom: "6px" }}>
                         {listing.title}
                     </styled.h3>
-                    <Box css={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "12px" }}>
+                    <Box css={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "8px" }}>
                         <MapPin size={13} color="#c5c1ba" />
                         <styled.span css={{ fontSize: "13px", color: "gray.500" }}>
-                            {listing.city}, {listing.neighborhood}
+                            {listing.address}
                         </styled.span>
                     </Box>
-                    <styled.p css={{ fontSize: "14px", color: "gray.600", lineHeight: "1.6", marginBottom: "16px" }}>
+                    <Box css={{ display: "flex", gap: "8px", marginBottom: "12px" }}>
+                        <Box css={{ border: "1px solid", borderColor: "gray.300", borderRadius: "999px", paddingX: "14px", paddingY: "5px", fontSize: "12px", color: "gray.600" }}>
+                            {listing.size} m²
+                        </Box>
+                        <Box css={{ border: "1px solid", borderColor: "gray.300", borderRadius: "999px", paddingX: "14px", paddingY: "5px", fontSize: "12px", color: "gray.600" }}>
+                            Dostupno od {listing.availableFrom}
+                        </Box>
+                    </Box>
+                    <styled.p css={{ fontSize: "14px", color: "gray.600", lineHeight: "1.6" }}>
                         {listing.description}
                     </styled.p>
-                    <Box css={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                        {listing.tags.map((tag) => (
-                            <Box key={tag} css={{ border: "1px solid", borderColor: "gray.300", borderRadius: "999px", paddingX: "14px", paddingY: "5px", fontSize: "12px", color: "gray.600" }}>
-                                {tag}
-                            </Box>
-                        ))}
-                    </Box>
                 </Box>
             </Box>
 
