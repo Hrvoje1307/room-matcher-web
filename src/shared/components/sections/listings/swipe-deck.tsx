@@ -3,8 +3,10 @@
 import { useState, useRef } from "react";
 import { Box, styled } from "../../../../../styled-system/jsx";
 import { X, Heart, MapPin } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { getAllListingsQueryOptions, type ListingResponse } from "@/entities/listings/queries";
+import { addFavoriteMutationOptions } from "@/entities/favorites/mutations";
+import { getFavoritesQueryOptions } from "@/entities/favorites/queries";
 
 interface SwipeDeckProps {
     onFavorite?: () => void;
@@ -14,9 +16,14 @@ export function SwipeDeck({ onFavorite }: SwipeDeckProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [localFavoritesCount, setLocalFavoritesCount] = useState(0);
 
-    const { data: listings, isLoading, isError } = useQuery(getAllListingsQueryOptions());
+    const { data: allListings, isLoading, isError } = useQuery(getAllListingsQueryOptions());
+    const { data: favorites, isLoading: favLoading } = useQuery(getFavoritesQueryOptions());
+    const { mutate: addFavorite } = useMutation(addFavoriteMutationOptions());
 
-    if (isLoading) {
+    const favoriteIds = new Set(favorites?.map((f) => f.id) ?? []);
+    const listings = allListings?.filter((l) => !favoriteIds.has(l.id));
+
+    if (isLoading || favLoading) {
         return (
             <Box css={{ display: "flex", alignItems: "center", justifyContent: "center", height: "60vh" }}>
                 <styled.p css={{ fontSize: "16px", color: "gray.500" }}>Učitavanje oglasa...</styled.p>
@@ -38,6 +45,7 @@ export function SwipeDeck({ onFavorite }: SwipeDeckProps) {
     const next = listings[currentIndex + 1];
 
     function handleFavorite() {
+        addFavorite(current.id);
         setLocalFavoritesCount((n) => n + 1);
         onFavorite?.();
         setCurrentIndex((i) => i + 1);
