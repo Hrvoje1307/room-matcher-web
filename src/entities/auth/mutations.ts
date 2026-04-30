@@ -17,6 +17,8 @@ export interface RegisterRequest {
     name: string;
     gender: "MALE" | "FEMALE" | "OTHER";
     dateOfBirth: string;
+    bio: string;
+    profileImageUrl: string;
 }
 
 export function loginMutationOptions() {

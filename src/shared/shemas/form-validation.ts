@@ -20,7 +20,11 @@ export const registrationSchema = z
         username: z.string().min(3, "Korisničko ime mora imati najmanje 3 znaka"),
         email: z.string().email("Unesite valjanu email adresu"),
         gender: z.enum(["MALE", "FEMALE", "OTHER"] as const, { message: "Odaberite spol" }),
-        dateOfBirth: z.string().min(1, "Unesite datum rođenja"),
+        dateOfBirth: z.string().min(1, "Unesite datum rođenja").refine(
+            (val) => new Date(val) < new Date(),
+            "Datum rođenja mora biti u prošlosti"
+        ),
+        bio: z.string().min(10, "Bio mora imati najmanje 10 znakova"),
         password: passwordSchema,
         confirmPassword: z.string(),
     })

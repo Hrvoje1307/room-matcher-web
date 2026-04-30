@@ -79,6 +79,7 @@ export default function Page() {
             email: "",
             gender: "MALE",
             dateOfBirth: "",
+            bio: "",
             password: "",
             confirmPassword: "",
         },
@@ -93,6 +94,8 @@ export default function Page() {
             password: data.password,
             gender: data.gender,
             dateOfBirth: data.dateOfBirth,
+            bio: data.bio,
+            profileImageUrl: "",
         });
     }
 
@@ -156,9 +159,28 @@ export default function Page() {
                             </Box>
                             <Box>
                                 <label className={labelCss}>Datum rođenja</label>
-                                <input {...register("dateOfBirth")} type="date" className={errors.dateOfBirth ? inputErrorCss : inputCss} />
+                                <input {...register("dateOfBirth")} type="date" max={new Date().toISOString().split("T")[0]} className={errors.dateOfBirth ? inputErrorCss : inputCss} />
                                 {errors.dateOfBirth && <styled.p css={{ fontSize: "12px", color: "red.500", marginTop: "4px" }}>{errors.dateOfBirth.message}</styled.p>}
                             </Box>
+                        </Box>
+
+                        {/* Bio */}
+                        <Box css={{ marginBottom: "20px" }}>
+                            <label className={labelCss}>O sebi</label>
+                            <styled.textarea
+                                {...register("bio")}
+                                placeholder="Napiši nešto o sebi..."
+                                rows={3}
+                                css={{
+                                    width: "100%", backgroundColor: "white", border: "1px solid",
+                                    borderColor: errors.bio ? "red.400" : "gray.400",
+                                    borderRadius: "12px", padding: "12px 16px", fontSize: "14px",
+                                    color: "navy.500", outline: "none", resize: "none",
+                                    _placeholder: { color: "gray.500" },
+                                    _focus: { borderColor: "coral.400", boxShadow: "0 0 0 3px token(colors.coral.100)" },
+                                }}
+                            />
+                            {errors.bio && <styled.p css={{ fontSize: "12px", color: "red.500", marginTop: "4px" }}>{errors.bio.message}</styled.p>}
                         </Box>
 
                         {/* Lozinka */}
