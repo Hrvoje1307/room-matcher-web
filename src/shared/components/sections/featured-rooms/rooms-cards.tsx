@@ -8,7 +8,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllListingsQueryOptions } from "@/entities/listings/queries";
 
 export function RoomCards() {
-    const { data: listings, isLoading } = useQuery(getAllListingsQueryOptions());
+    const { data: listings, isLoading, isError } = useQuery({
+        ...getAllListingsQueryOptions(),
+        retry: false,
+    });
 
     const rooms = listings?.slice(-3) ?? [];
 
@@ -16,11 +19,13 @@ export function RoomCards() {
         return (
             <Box css={{ display: "grid", gridTemplateColumns: { base: "1fr", sm: "1fr 1fr", lg: "1fr 1fr 1fr" }, gap: "20px" }}>
                 {[1, 2, 3].map((i) => (
-                    <Box key={i} css={{ backgroundColor: "sand.200", borderRadius: "18px", height: "340px", animation: "pulse 1.5s ease-in-out infinite" }} />
+                    <Box key={i} css={{ backgroundColor: "sand.200", borderRadius: "18px", height: "340px" }} />
                 ))}
             </Box>
         );
     }
+
+    if (isError || !rooms.length) return null;
 
     return (
         <Box css={{ display: "grid", gridTemplateColumns: { base: "1fr", sm: "1fr 1fr", lg: "1fr 1fr 1fr" }, gap: "20px" }}>
