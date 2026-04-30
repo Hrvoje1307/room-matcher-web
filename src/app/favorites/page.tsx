@@ -7,6 +7,7 @@ import { Box, styled } from "../../../styled-system/jsx";
 import { AppNavigation } from "@/shared/components/sections/navigations/app-navigation";
 import { getCurrentUser } from "@/entities/user/queries";
 import { getFavoritesQueryOptions } from "@/entities/favorites/queries";
+import Link from "next/link";
 import { MapPin, Heart } from "lucide-react";
 import type { ListingResponse } from "@/entities/listings/queries";
 
@@ -62,7 +63,8 @@ function FavoriteCard({ listing }: { listing: ListingResponse }) {
     const image = listing.images[0]?.imageUrl;
 
     return (
-        <Box css={{ backgroundColor: "white", borderRadius: "16px", overflow: "hidden", boxShadow: "0 2px 12px rgba(0,0,0,0.07)", transition: "box-shadow 0.2s", _hover: { boxShadow: "0 6px 24px rgba(0,0,0,0.12)" } }}>
+        <Link href={`/listings/${listing.id}`} style={{ display: "block" }}>
+        <Box css={{ backgroundColor: "white", borderRadius: "16px", overflow: "hidden", boxShadow: "0 2px 12px rgba(0,0,0,0.07)", transition: "box-shadow 0.2s", cursor: "pointer", _hover: { boxShadow: "0 6px 24px rgba(0,0,0,0.12)" } }}>
             {/* Image */}
             <Box css={{ height: "200px", position: "relative", overflow: "hidden" }}>
                 {image ? (
@@ -99,5 +101,6 @@ function FavoriteCard({ listing }: { listing: ListingResponse }) {
                 </Box>
             </Box>
         </Box>
+        </Link>
     );
 }
