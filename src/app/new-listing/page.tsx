@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Box, styled } from "../../../styled-system/jsx";
 import { css } from "../../../styled-system/css";
@@ -11,7 +11,7 @@ import { Container } from "@/shared/components/ui/container";
 import { Button } from "@/shared/components/ui/button";
 import { AppNavigation } from "@/shared/components/sections/navigations/app-navigation";
 import { getCurrentUser } from "@/entities/user/queries";
-import { addListingMutationOptions, uploadListingImages } from "@/entities/listings/queries";
+import { addListingMutationOptions, uploadListingImages, listingsQueryKeys } from "@/entities/listings/queries";
 import { newListingSchema, type NewListingFormValues } from "@/shared/shemas/form-validation";
 import { Upload, X } from "lucide-react";
 
@@ -38,6 +38,7 @@ const labelCss = css({
 
 export default function Page() {
     const router = useRouter();
+    const queryClient = useQueryClient();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [serverError, setServerError] = useState<string | null>(null);
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -72,6 +73,7 @@ export default function Page() {
             if (selectedFiles.length > 0) {
                 await uploadListingImages(listing.id, selectedFiles);
             }
+            await queryClient.invalidateQueries({ queryKey: listingsQueryKeys.all() });
             router.push("/listings");
         },
         onError: () => {

@@ -10,6 +10,7 @@ import { AppNavigation } from "@/shared/components/sections/navigations/app-navi
 import { getCurrentUser } from "@/entities/user/queries";
 import { getListingByIdQueryOptions } from "@/entities/listings/queries";
 import { MapPin, ArrowLeft, CalendarDays, Ruler } from "lucide-react";
+import { getImageUrl } from "@/shared/utils/image-url";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
@@ -73,7 +74,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                 {hasImages ? (
                     <Box css={{ position: "relative", backgroundColor: "navy.500", marginBottom: "32px" }}>
                         <Box
-                            style={{ backgroundImage: `url(${listing.images[photoIndex]?.imageUrl})`, backgroundSize: "cover", backgroundPosition: "center" }}
+                            style={{ backgroundImage: `url(${getImageUrl(listing.images[photoIndex]?.imageUrl)})`, backgroundSize: "cover", backgroundPosition: "center" }}
                             css={{ height: { base: "260px", md: "440px" }, width: "100%" }}
                         />
 

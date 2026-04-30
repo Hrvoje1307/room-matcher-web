@@ -7,6 +7,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getAllListingsQueryOptions, getMyListingsQueryOptions, type ListingResponse } from "@/entities/listings/queries";
 import { addFavoriteMutationOptions } from "@/entities/favorites/mutations";
 import { getFavoritesQueryOptions } from "@/entities/favorites/queries";
+import { getImageUrl } from "@/shared/utils/image-url";
 
 interface SwipeDeckProps {
     onFavorite?: () => void;
@@ -102,7 +103,7 @@ export function SwipeDeck({ onFavorite }: SwipeDeckProps) {
                     >
                         {next.images.length > 0 ? (
                             <Box
-                                style={{ backgroundImage: `url(${next.images[0].imageUrl})`, backgroundSize: "cover", backgroundPosition: "center" }}
+                                style={{ backgroundImage: `url(${getImageUrl(next.images[0].imageUrl)})`, backgroundSize: "cover", backgroundPosition: "center" }}
                                 css={{ height: "58%", width: "100%" }}
                             />
                         ) : (
@@ -250,7 +251,7 @@ function SwipeCard({ listing, onFavorite, onSkip }: SwipeCardProps) {
                     {hasImages ? (
                         <>
                             <Box
-                                style={{ backgroundImage: `url(${listing.images[photoIndex]?.imageUrl})`, backgroundSize: "cover", backgroundPosition: "center", width: "100%", height: "100%", transition: "opacity 0.2s ease" }}
+                                style={{ backgroundImage: `url(${getImageUrl(listing.images[photoIndex]?.imageUrl)})`, backgroundSize: "cover", backgroundPosition: "center", width: "100%", height: "100%", transition: "opacity 0.2s ease" }}
                             />
 
                             {/* Bottom gradient */}

@@ -9,6 +9,7 @@ import { getCurrentUser } from "@/entities/user/queries";
 import { getFavoritesQueryOptions } from "@/entities/favorites/queries";
 import Link from "next/link";
 import { MapPin, Heart } from "lucide-react";
+import { getImageUrl } from "@/shared/utils/image-url";
 import type { ListingResponse } from "@/entities/listings/queries";
 
 export default function Page() {
@@ -60,7 +61,7 @@ export default function Page() {
 }
 
 function FavoriteCard({ listing }: { listing: ListingResponse }) {
-    const image = listing.images[0]?.imageUrl;
+    const image = getImageUrl(listing.images[0]?.imageUrl);
 
     return (
         <Link href={`/listings/${listing.id}`} style={{ display: "block" }}>
