@@ -122,6 +122,26 @@ pnpm build
 pnpm start
 ```
 
+## Deployment
+
+The frontend is deployed on Vercel.
+
+### Production URL
+
+```text
+https://roommate-matcher-web.vercel.app
+```
+
+### Vercel configuration
+
+- Framework preset: Next.js
+- Build command: `pnpm build`
+- Output: `.next`
+- Environment variable: `NEXT_PUBLIC_API_URL`
+
+After setting the environment variables, redeploy the project to apply changes.
+
+
 ## Notes
 
 - The client stores JWT access tokens in `localStorage` and sends them as `Authorization: Bearer <token>` headers.
