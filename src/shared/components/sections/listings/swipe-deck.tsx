@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { Box, styled } from "../../../../../styled-system/jsx";
 import { X, Heart, MapPin } from "lucide-react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getAllListingsQueryOptions, getMyListingsQueryOptions, type ListingResponse } from "@/entities/listings/queries";
 import { addFavoriteMutationOptions } from "@/entities/favorites/mutations";
 import { getFavoritesQueryOptions } from "@/entities/favorites/queries";
@@ -15,11 +15,15 @@ interface SwipeDeckProps {
 export function SwipeDeck({ onFavorite }: SwipeDeckProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [localFavoritesCount, setLocalFavoritesCount] = useState(0);
+    const queryClient = useQueryClient();
 
     const { data: allListings, isLoading, isError } = useQuery(getAllListingsQueryOptions());
     const { data: favorites, isLoading: favLoading } = useQuery(getFavoritesQueryOptions());
     const { data: myListings, isLoading: myLoading } = useQuery(getMyListingsQueryOptions());
-    const { mutate: addFavorite } = useMutation(addFavoriteMutationOptions());
+    const { mutate: addFavorite } = useMutation({
+        ...addFavoriteMutationOptions(),
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ["favorites"] }),
+    });
 
     const favoriteIds = new Set(favorites?.map((f) => f.id) ?? []);
     const myListingIds = new Set(myListings?.map((l) => l.id) ?? []);

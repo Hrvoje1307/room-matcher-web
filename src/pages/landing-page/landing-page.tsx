@@ -5,7 +5,6 @@ import { Box } from "../../../styled-system/jsx";
 import { Hero } from "@/shared/components/sections/hero/hero";
 import { Porcess } from "@/shared/components/sections/process/process";
 import { WhyChooseUs } from "@/shared/components/sections/why-choose-us/why-choose-us";
-import { FeaturedRooms } from "@/shared/components/sections/featured-rooms/featured-rooms";
 import { CtaContainer } from "@/shared/components/sections/cta-section/cta-container";
 import { Footer } from "@/shared/components/sections/footer";
 
@@ -39,11 +38,6 @@ export default function LandingPage() {
             <Box id="o-nama" css={{ backgroundColor: "cream.500" }}>
                 <Container>
                     <WhyChooseUs />
-                </Container>
-            </Box>
-            <Box id="oglasi" css={{ paddingY: "90px" }}>
-                <Container>
-                    <FeaturedRooms />
                 </Container>
             </Box>
             <Box css={{ paddingY: "90px", backgroundColor: "cream.500" }}>
