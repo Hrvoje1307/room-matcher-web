@@ -44,6 +44,13 @@ export function getAllListingsQueryOptions() {
     });
 }
 
+export function getMyListingsQueryOptions() {
+    return queryOptions({
+        queryKey: [...listingsQueryKeys.all(), "mine"],
+        queryFn: () => fetchData({ url: `/api/listings/me` }) as Promise<ListingResponse[]>,
+    });
+}
+
 export function getListingByIdQueryOptions(listingId: string) {
     return queryOptions({
         queryKey: listingsQueryKeys.detail(listingId),

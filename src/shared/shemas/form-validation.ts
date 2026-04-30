@@ -46,3 +46,29 @@ export const newListingSchema = z.object({
 });
 
 export type NewListingFormValues = z.infer<typeof newListingSchema>;
+
+export const profileSchema = z
+    .object({
+        name: z.string().min(2, "Ime mora imati najmanje 2 znaka"),
+        username: z.string().min(2, "Korisničko ime mora imati najmanje 2 znaka"),
+        email: z.string().email("Unesite valjanu email adresu"),
+        gender: z.enum(["MALE", "FEMALE", "OTHER"] as const, { message: "Odaberite spol" }),
+        bio: z.string().max(1000, "Bio ne smije biti duži od 1000 znakova"),
+        dateOfBirth: z.string().min(1, "Unesite datum rođenja").refine(
+            (val) => new Date(val) < new Date(),
+            "Datum rođenja mora biti u prošlosti"
+        ),
+        profileImageUrl: z.string(),
+        currentPassword: z.string(),
+        newPassword: z.string(),
+    })
+    .refine((data) => !data.newPassword || !!data.currentPassword, {
+        message: "Unesite trenutnu lozinku za promjenu lozinke",
+        path: ["currentPassword"],
+    })
+    .refine((data) => !data.newPassword || data.newPassword.length >= 8, {
+        message: "Nova lozinka mora imati najmanje 8 znakova",
+        path: ["newPassword"],
+    });
+
+export type ProfileFormValues = z.infer<typeof profileSchema>;

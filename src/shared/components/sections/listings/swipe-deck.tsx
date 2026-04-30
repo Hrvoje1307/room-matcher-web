@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { Box, styled } from "../../../../../styled-system/jsx";
 import { X, Heart, MapPin } from "lucide-react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { getAllListingsQueryOptions, type ListingResponse } from "@/entities/listings/queries";
+import { getAllListingsQueryOptions, getMyListingsQueryOptions, type ListingResponse } from "@/entities/listings/queries";
 import { addFavoriteMutationOptions } from "@/entities/favorites/mutations";
 import { getFavoritesQueryOptions } from "@/entities/favorites/queries";
 
@@ -18,12 +18,14 @@ export function SwipeDeck({ onFavorite }: SwipeDeckProps) {
 
     const { data: allListings, isLoading, isError } = useQuery(getAllListingsQueryOptions());
     const { data: favorites, isLoading: favLoading } = useQuery(getFavoritesQueryOptions());
+    const { data: myListings, isLoading: myLoading } = useQuery(getMyListingsQueryOptions());
     const { mutate: addFavorite } = useMutation(addFavoriteMutationOptions());
 
     const favoriteIds = new Set(favorites?.map((f) => f.id) ?? []);
-    const listings = allListings?.filter((l) => !favoriteIds.has(l.id));
+    const myListingIds = new Set(myListings?.map((l) => l.id) ?? []);
+    const listings = allListings?.filter((l) => !favoriteIds.has(l.id) && !myListingIds.has(l.id));
 
-    if (isLoading || favLoading) {
+    if (isLoading || favLoading || myLoading) {
         return (
             <Box css={{ display: "flex", alignItems: "center", justifyContent: "center", height: "60vh" }}>
                 <styled.p css={{ fontSize: "16px", color: "gray.500" }}>Učitavanje oglasa...</styled.p>

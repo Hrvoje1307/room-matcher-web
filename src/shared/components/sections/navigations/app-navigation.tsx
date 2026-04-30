@@ -124,15 +124,19 @@ export function AppNavigation({ username, favoritesCount = 0 }: AppNavigationPro
                         </Link>
 
                         {/* Username */}
-                        <styled.span
-                            css={{
-                                fontSize: "14px",
-                                fontWeight: "500",
-                                color: "navy.500",
-                            }}
-                        >
-                            {username}
-                        </styled.span>
+                        <Link href="/profile">
+                            <styled.span
+                                css={{
+                                    fontSize: "14px",
+                                    fontWeight: "500",
+                                    color: "navy.500",
+                                    _hover: { color: "coral.500" },
+                                    cursor: "pointer",
+                                }}
+                            >
+                                {username}
+                            </styled.span>
+                        </Link>
 
                         {/* Logout */}
                         <styled.button
