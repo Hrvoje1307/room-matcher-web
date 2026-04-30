@@ -53,10 +53,22 @@ export function getListingByIdQueryOptions(listingId: string) {
 
 export function addListingMutationOptions() {
     return {
-        mutationFn: async (newListing: Omit<ListingResponse, "id" | "images">) => {
-            await fetchData({ url: `/api/listings`, body: newListing, method: "POST" });
-        },
+        mutationFn: (newListing: Omit<ListingResponse, "id" | "images">) =>
+            fetchData({ url: `/api/listings`, body: newListing, method: "POST" }) as Promise<ListingResponse>,
     };
+}
+
+export async function uploadListingImages(listingId: number, files: File[]): Promise<void> {
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+    const formData = new FormData();
+    files.forEach((file) => formData.append("files", file));
+    const headers: Record<string, string> = {};
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/listings/${listingId}/images`, {
+        method: "POST",
+        headers,
+        body: formData,
+    });
 }
 
 export function removeListingMutationOptions() {

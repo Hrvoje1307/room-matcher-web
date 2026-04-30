@@ -34,3 +34,15 @@ export const registrationSchema = z
     });
 
 export type RegistrationFormValues = z.infer<typeof registrationSchema>;
+
+export const newListingSchema = z.object({
+    title: z.string().min(2, "Naslov mora imati najmanje 2 znaka").max(150, "Naslov ne smije biti duži od 150 znakova"),
+    address: z.string().min(5, "Adresa mora imati najmanje 5 znakova").max(150, "Adresa ne smije biti duža od 150 znakova"),
+    price: z.number().positive("Cijena mora biti veća od 0"),
+    size: z.number().min(5, "Veličina mora biti najmanje 5 m²").max(200, "Veličina ne smije biti veća od 200 m²"),
+    description: z.string().max(1000, "Opis ne smije biti duži od 1000 znakova"),
+    availableFrom: z.string().min(1, "Odaberite datum dostupnosti"),
+    isActive: z.boolean(),
+});
+
+export type NewListingFormValues = z.infer<typeof newListingSchema>;

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Box, styled } from "../../../../../styled-system/jsx";
 import { Logo } from "../../ui/logo";
-import { Heart, LogOut } from "lucide-react";
+import { Heart, LogOut, PlusCircle } from "lucide-react";
 import { Container } from "../../ui/container";
 import { authTokens } from "@/shared/utils/auth-tokens";
 import { fetchData } from "@/shared/hooks/fetchData";
@@ -62,6 +62,29 @@ export function AppNavigation({ username, favoritesCount = 0 }: AppNavigationPro
                             gap: "20px",
                         }}
                     >
+                        {/* New listing */}
+                        <Link href="/new-listing">
+                            <Box
+                                css={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "6px",
+                                    backgroundColor: "coral.500",
+                                    color: "white",
+                                    fontSize: "13px",
+                                    fontWeight: "600",
+                                    borderRadius: "8px",
+                                    paddingX: "12px",
+                                    paddingY: "7px",
+                                    cursor: "pointer",
+                                    _hover: { backgroundColor: "coral.600" },
+                                }}
+                            >
+                                <PlusCircle size={15} />
+                                <span>Dodaj oglas</span>
+                            </Box>
+                        </Link>
+
                         {/* Favorites */}
                         <Link href="/favorites">
                             <Box
