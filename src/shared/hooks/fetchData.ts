@@ -18,7 +18,6 @@ export async function fetchData({ url, signal, method = "GET", body }: Data) {
 
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`, {
-      credentials: "include",
       signal,
       method,
       body: body ? JSON.stringify(body) : undefined,
